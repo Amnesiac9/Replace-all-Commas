@@ -80,6 +80,11 @@ for filename in os.listdir(directory_path):
             if is_numeric(cell.value):
                 cell.data_type = 'n'
                 cell.number_format = '0.00000'
+                
+        for row in ws.iter_rows(min_row=9):
+            for cell in row:
+                if is_numeric(cell.value):
+                    cell.data_type = 'n'
             
             
         try:
