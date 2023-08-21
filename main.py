@@ -1,10 +1,7 @@
 import os
 from openpyxl import load_workbook
 from openpyxl import Workbook
-import xlrd
-import xlwt
 import pandas as pd
-import numpy as np
 
 
 # Define the directory where your .xlsx files are located

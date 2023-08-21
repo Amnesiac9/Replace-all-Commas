@@ -1,2 +1,2 @@
-@echo off
+@echo
 pythonw.exe "main.py"
