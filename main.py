@@ -9,7 +9,8 @@ import pandas as pd
 
 decimal_places = 5
 
-directory_path = input("enter the full directory path: ")
+directory_path = current_directory = os.getcwd() #input("enter the full directory path: ")
+
 
 # Define the text you want to find and replace
 find_text = ','
