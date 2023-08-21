@@ -1,2 +1,3 @@
-@echo
-pythonw.exe "main.py"
+@echo off
+python "replace_commas.py"
+pause
