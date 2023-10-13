@@ -6,7 +6,7 @@ import pandas as pd
 # Define the directory where your .xlsx files are located
 #directory_path = '/path/to/your/directory'
 
-decimal_places = 5
+DECIMAL_PLACES = 5
 
 directory_path = current_directory = os.getcwd() #input("enter the full directory path: ")
 
@@ -18,13 +18,13 @@ replace_text = ''
 # Function to format 'Gallons' column
 def format_gallons(value):
     if isinstance(value, (float, int)):
-        return round(value, 5)
+        return round(value, DECIMAL_PLACES)
     else:
         return value
     
     
 # Specify the column to iterate over
-column_letter = 'O'
+COLUMN_LETTER = 'O'
 
 # Define a function to round and format a number
 # def format_number(value):
@@ -55,15 +55,32 @@ for filename in os.listdir(directory_path):
         # Set headers
         df.columns = ['SKU', 'Name', 'Blank', 'Blank2', 'Tax Class', 'Size', 'On Hand Cases', 'On Hand Bottles', 'Open Order Cases', 'Open Order Bottles', 'Available Cases', 'Available Bottles', 'Cost/Case', 'On-Hand Value', 'Gallons']
 
+
+        # Get the sum of the available cases column for later
+        availableCasesSum = 0
+        
+
+
         df.dropna(how='all', inplace=True)
         df = df.fillna('')
         # Perform the find and replace operation on all DataFrame columns
-        df = df.applymap(lambda x: str(x).replace(find_text, replace_text))
-
-        # Save the DataFrame to an .xlsx file
+        #df = df.applymap(lambda x: str(x).replace(find_text, replace_text))
+        # df = df.applymap(lambda x: str(x).replace(find_text, replace_text))
+        df = df.apply(lambda x: x.map(lambda val: str(val).replace(find_text, replace_text)))
+        
+        for value in df['On Hand Cases']:
+            try:
+                num = int(value)
+                availableCasesSum += num
+            except ValueError:
+                pass
+      
         xlsx_filename = filename.replace('.xls', '.xlsx')
         xlsx_file_path = os.path.join(directory_path, xlsx_filename)
        # df.to_excel(xlsx_file_path, index=False)
+       
+       # variable to track worksheet sum of available cases
+        availableCasesSumWB = 0
         
         # Create a new Excel workbook and add the DataFrame to it
         wb = Workbook()
@@ -75,7 +92,7 @@ for filename in os.listdir(directory_path):
             ws.append(list(row))
             
         # Iterate over the cells in the specified column
-        for cell in ws[column_letter]:
+        for cell in ws[COLUMN_LETTER]:
             # Check if it's a numeric value
             if is_numeric(cell.value):
                 cell.data_type = 'n'
@@ -85,7 +102,21 @@ for filename in os.listdir(directory_path):
             for cell in row:
                 if is_numeric(cell.value):
                     cell.data_type = 'n'
+                    
+        for cell in ws['G']:
+            try:
+                num = int(cell.value)
+                availableCasesSumWB += num
+            except ValueError:
+                pass
             
+        for cell in ws[11]:
+            col_num = cell.column - 1
+            cell.value = df.columns[col_num]
+        
+            
+            
+        print(f'Original sum: {availableCasesSum}, wb sum: {availableCasesSumWB}')
             
         try:
             wb.save(xlsx_file_path)
