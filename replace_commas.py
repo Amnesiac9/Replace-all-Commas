@@ -115,8 +115,8 @@ for filename in os.listdir(directory_path):
             cell.value = df.columns[col_num]
         
             
-            
-        print(f'Original sum: {availableCasesSum}, wb sum: {availableCasesSumWB}')
+        if availableCasesSum != availableCasesSumWB:
+            print(f'WARNING! Sums don\'t match! Original sum: {availableCasesSum}, wb sum: {availableCasesSumWB}')
             
         try:
             wb.save(xlsx_file_path)
