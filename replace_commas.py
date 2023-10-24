@@ -53,8 +53,11 @@ for filename in os.listdir(directory_path):
         df = pd.read_excel(file_path)
         
         # Set headers
-        df.columns = ['SKU', 'Name', 'Blank', 'Blank2', 'Tax Class', 'Size', 'On Hand Cases', 'On Hand Bottles', 'Open Order Cases', 'Open Order Bottles', 'Available Cases', 'Available Bottles', 'Cost/Case', 'On-Hand Value', 'Gallons']
-
+        try: 
+            df.columns = ['SKU', 'Name', 'Blank', 'Blank2', 'Tax Class', 'Size', 'On Hand Cases', 'On Hand Bottles', 'Open Order Cases', 'Open Order Bottles', 'Available Cases', 'Available Bottles', 'Cost/Case', 'On-Hand Value', 'Gallons']
+        except:
+            df.columns = ['SKU', 'Name', 'Blank', 'Blank2', 'Tax Class', 'Size', 'On Hand Cases', 'On Hand Bottles', 'Open Order Cases', 'Open Order Bottles', 'Available Cases', 'Available Bottles']
+            print(f"No data in {filename}, implimenting shorter columns")
 
         # Get the sum of the available cases column for later
         availableCasesSum = 0
@@ -109,10 +112,14 @@ for filename in os.listdir(directory_path):
                 availableCasesSumWB += num
             except ValueError:
                 pass
-            
+        
+        #Add the headers to row 11
         for cell in ws[11]:
             col_num = cell.column - 1
-            cell.value = df.columns[col_num]
+            try:
+                cell.value = df.columns[col_num]
+            except:
+                print(f"col_num out of bounds on row 11, Col_num: {col_num}, cell column: {cell.column}")
         
             
         if availableCasesSum != availableCasesSumWB:
