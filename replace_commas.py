@@ -62,7 +62,8 @@ for filename in os.listdir(directory_path):
         # Get the sum of the available cases column for later
         availableCasesSum = 0
         
-
+        print("df.columns:", df.columns)
+        
 
         df.dropna(how='all', inplace=True)
         df = df.fillna('')
@@ -117,10 +118,12 @@ for filename in os.listdir(directory_path):
         for cell in ws[11]:
             col_num = cell.column - 1
             try:
-                cell.value = df.columns[col_num]
+                cell.value = ws[1][col_num].value # pull the headers and put in row 11
             except:
                 print(f"col_num out of bounds on row 11, Col_num: {col_num}, cell column: {cell.column}")
         
+        ws.delete_rows(1,1)
+        ws.insert_rows(10, 1)
             
         if availableCasesSum != availableCasesSumWB:
             print(f'WARNING! Sums don\'t match! Original sum: {availableCasesSum}, wb sum: {availableCasesSumWB}')
