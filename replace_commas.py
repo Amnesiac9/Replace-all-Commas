@@ -145,4 +145,4 @@ for filename in os.listdir(directory_path):
             wb.save(xlsx_file_path+'_2.xlsx')
     
 
-print("Commas replaced in all .xls files. v1.1.0")
+print("Commas replaced in all .xls files. v1.1.2")
