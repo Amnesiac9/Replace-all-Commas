@@ -21,16 +21,6 @@ def format_gallons(value):
         return round(value, DECIMAL_PLACES)
     else:
         return value
-    
-    
-
-
-# Define a function to round and format a number
-# def format_number(value):
-#     if isinstance(value, (int, float)):
-#         return f'{value:.2f}'
-#     return value  # Return non-numeric values as they are
-
 
 def is_numeric(value):
     try:
