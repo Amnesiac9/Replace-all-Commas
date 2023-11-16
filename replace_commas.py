@@ -55,12 +55,11 @@ for filename in os.listdir(directory_path):
         try:
             filenameSplit = filename.split('.')[0][:4]
             reportName = df['SKU'][23].split(' ')[1][:4] #grab the first 4 characters of the 1 index of the report name line
-            print(f'filename: {filenameSplit} | reportname: {reportName}')
             if str.lower(filenameSplit) != str.lower(reportName):
                 reportName = df['SKU'][23].split(' ')[1][1:5] #grab the first 4 characters after the first character of the 1 index of the report name line
                 if str.lower(filenameSplit) != str.lower(reportName):
-                    print('Warning! ReportName:  does not match File Name!')
-                    # print(f'filename: {filenameSplit} | reportname: {reportName}')
+                    print('------------- WARNING! -----------  ReportName:  does not match File Name!')
+                    print(f'filename: {filenameSplit} | reportname: {reportName}')  
         except:
             print('Error grabbing file name from cell A25. Filenames not compared.')
             print(f'filename: {filenameSplit} | reportname: {reportName}')
@@ -137,7 +136,7 @@ for filename in os.listdir(directory_path):
         ws.insert_rows(10, 1) # Add blank row at index 10 to seperate header info from the table
             
         if availableCasesSum != availableCasesSumWB:
-            print(f'WARNING! Sums don\'t match! Original sum: {availableCasesSum}, wb sum: {availableCasesSumWB}')
+            print(f'------------- WARNING! ----------- Sums don\'t match! Original sum: {availableCasesSum}, wb sum: {availableCasesSumWB}')
             
         try:
             wb.save(xlsx_file_path)
