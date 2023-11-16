@@ -52,13 +52,15 @@ for filename in os.listdir(directory_path):
         # print("df.columns:", df.columns)
         
         # Grab the name of the file to compare to internal contents
-        
         try:
             filenameSplit = filename.split('.')[0][:4]
             reportName = df['SKU'][23].split(' ')[1][:4] #grab the first 4 characters of the 1 index of the report name line
+            print(f'filename: {filenameSplit} | reportname: {reportName}')
             if str.lower(filenameSplit) != str.lower(reportName):
-                print('Warning! ReportName:  does not match File Name!')
-                print(f'filename: {filenameSplit} | reportname: {reportName}')
+                reportName = df['SKU'][23].split(' ')[1][1:5] #grab the first 4 characters after the first character of the 1 index of the report name line
+                if str.lower(filenameSplit) != str.lower(reportName):
+                    print('Warning! ReportName:  does not match File Name!')
+                    # print(f'filename: {filenameSplit} | reportname: {reportName}')
         except:
             print('Error grabbing file name from cell A25. Filenames not compared.')
             print(f'filename: {filenameSplit} | reportname: {reportName}')
