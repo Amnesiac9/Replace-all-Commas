@@ -52,9 +52,10 @@ for filename in os.listdir(directory_path):
         # print("df.columns:", df.columns)
         
         # Grab the name of the file to compare to internal contents
-        filenameSplit = filename.split('.')[0]
+        
         try:
-            reportName = df['SKU'][23].split(' ')[1][:5] #grab the first 5 characters of the 1 index of the report name line
+            filenameSplit = filename.split('.')[0][:4]
+            reportName = df['SKU'][23].split(' ')[1][:4] #grab the first 4 characters of the 1 index of the report name line
             if str.lower(filenameSplit) != str.lower(reportName):
                 print('Warning! ReportName:  does not match File Name!')
                 print(f'filename: {filenameSplit} | reportname: {reportName}')
