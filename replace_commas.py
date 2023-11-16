@@ -23,8 +23,7 @@ def format_gallons(value):
         return value
     
     
-# Specify the column to iterate over
-COLUMN_LETTER = 'O'
+
 
 # Define a function to round and format a number
 # def format_number(value):
@@ -58,12 +57,25 @@ for filename in os.listdir(directory_path):
         except:
             df.columns = ['SKU', 'Name', 'Blank', 'Blank2', 'Tax Class', 'Size', 'On Hand Cases', 'On Hand Bottles', 'Open Order Cases', 'Open Order Bottles', 'Available Cases', 'Available Bottles']
             print(f"No data in {filename}, implimenting shorter columns")
-
-        # Get the sum of the available cases column for later
-        availableCasesSum = 0
+    
         
-        print("df.columns:", df.columns)
+        # print("df.columns:", df.columns)
         
+        # Grab the name of the file to compare to internal contents
+        filenameSplit = filename.split('.')[0]
+        try:
+            reportName = df['SKU'][23].split(' ')[1][:5] #grab the first 5 characters of the 1 index of the report name line
+            if str.lower(filenameSplit) != str.lower(reportName):
+                print('Warning! ReportName:  does not match File Name!')
+                print(f'filename: {filenameSplit} | reportname: {reportName}')
+        except:
+            print('Error grabbing file name from cell A25. Filenames not compared.')
+            print(f'filename: {filenameSplit} | reportname: {reportName}')
+        
+            
+        
+        
+    
 
         df.dropna(how='all', inplace=True)
         df = df.fillna('')
@@ -72,6 +84,10 @@ for filename in os.listdir(directory_path):
         # df = df.applymap(lambda x: str(x).replace(find_text, replace_text))
         df = df.apply(lambda x: x.map(lambda val: str(val).replace(find_text, replace_text)))
         
+
+        
+        # Get the sum of the available cases column for later
+        availableCasesSum = 0
         for value in df['On Hand Cases']:
             try:
                 num = int(value)
@@ -95,6 +111,8 @@ for filename in os.listdir(directory_path):
         for index, row in df.iterrows():
             ws.append(list(row))
             
+        # Specify the column to iterate over for gallons
+        COLUMN_LETTER = 'O'
         # Iterate over the cells in the specified column
         for cell in ws[COLUMN_LETTER]:
             # Check if it's a numeric value
@@ -122,8 +140,8 @@ for filename in os.listdir(directory_path):
             except:
                 print(f"col_num out of bounds on row 11, Col_num: {col_num}, cell column: {cell.column}")
         
-        ws.delete_rows(1,1)
-        ws.insert_rows(10, 1)
+        ws.delete_rows(1,1) # Delete the hold headers at the top
+        ws.insert_rows(10, 1) # Add blank row at index 10 to seperate header info from the table
             
         if availableCasesSum != availableCasesSumWB:
             print(f'WARNING! Sums don\'t match! Original sum: {availableCasesSum}, wb sum: {availableCasesSumWB}')
@@ -134,4 +152,4 @@ for filename in os.listdir(directory_path):
             wb.save(xlsx_file_path+'_2.xlsx')
     
 
-print("Commas replaced in all .xls files. v1.0.4")
+print("Commas replaced in all .xls files. v1.1.0")
