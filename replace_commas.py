@@ -82,8 +82,7 @@ for filename in os.listdir(directory_path):
         availableCasesSum = 0
         for value in df['On Hand Cases']:
             try:
-                num = int(value)
-                availableCasesSum += num
+                availableCasesSum += int(value)
             except ValueError:
                 pass
       
@@ -117,10 +116,10 @@ for filename in os.listdir(directory_path):
                 if is_numeric(cell.value):
                     cell.data_type = 'n'
                     
+        # Get Sum of Column G to compare available cases SUM in the WorkBook
         for cell in ws['G']:
             try:
-                num = int(cell.value)
-                availableCasesSumWB += num
+                availableCasesSumWB += int(cell.value)
             except ValueError:
                 pass
         
