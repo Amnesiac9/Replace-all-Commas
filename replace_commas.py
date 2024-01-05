@@ -137,10 +137,14 @@ for filename in os.listdir(directory_path):
         if availableCasesSum != availableCasesSumWB:
             print(f'------------- WARNING! ----------- Sums don\'t match! Original sum: {availableCasesSum}, wb sum: {availableCasesSumWB}')
             
-        try:
-            wb.save(xlsx_file_path)
-        except PermissionError:
-            wb.save(xlsx_file_path+'_2.xlsx')
+            
+        while True:
+            try:
+                wb.save(xlsx_file_path)
+                break
+            except PermissionError:
+                input("Please close the file and press enter to try saving again")
+                continue
     
 
 print("Commas replaced in all .xls files. v1.1.2")
